@@ -19,7 +19,7 @@ import bootstrapper from './bootstrapper';
 import instancesController from './api/instances/instancesController';
 
 // DO NOT MOVE THIS. It is here to wrap routes in a domain to catch unhandled errors
-app.use(domainMiddleware);
+//app.use(domainMiddleware);
 
 // DO NOT MOVE THIS. It is here to handle unhandled rejected Promises cleanly
 //Promise.onPossiblyUnhandledRejection(err => {

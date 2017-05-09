@@ -75,15 +75,14 @@ var _apiInstancesInstancesController = require('./api/instances/instancesControl
 var _apiInstancesInstancesController2 = _interopRequireDefault(_apiInstancesInstancesController);
 
 // DO NOT MOVE THIS. It is here to wrap routes in a domain to catch unhandled errors
-
-var app = (0, _express2['default'])();
-app.use(_expressDomainMiddleware2['default']);
+//app.use(domainMiddleware);
 
 // DO NOT MOVE THIS. It is here to handle unhandled rejected Promises cleanly
 //Promise.onPossiblyUnhandledRejection(err => {
 //  throw err;
 //});
 
+var app = (0, _express2['default'])();
 _configValidation2['default'].validateConfig();
 _configValidation2['default'].validateEventStore(function (error) {
   if (error) {
