@@ -35,7 +35,7 @@ var InvalidInstanceApiKey = (function (_CSError) {
 })(_csError2['default']);
 
 exports['default'] = function (req, res, next, instanceId) {
-  _apiHelpersEventStoreClient2['default'].queryStatePartitionById({
+  return _apiHelpersEventStoreClient2['default'].queryStatePartitionById({
     name: 'instance',
     id: instanceId
   }).then(function (instance) {
@@ -43,6 +43,7 @@ exports['default'] = function (req, res, next, instanceId) {
       req.instance = instance;
       next();
     } else {
+      console.log("We are throwing!");
       throw new InvalidInstanceApiKey(instanceId);
     }
   });

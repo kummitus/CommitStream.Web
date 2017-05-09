@@ -26,6 +26,10 @@ var _middlewareCsErrorHandler = require('./middleware/csErrorHandler');
 
 var _middlewareCsErrorHandler2 = _interopRequireDefault(_middlewareCsErrorHandler);
 
+var _middlewareCatchAsyncErrors = require('./middleware/catchAsyncErrors');
+
+var _middlewareCatchAsyncErrors2 = _interopRequireDefault(_middlewareCatchAsyncErrors);
+
 var _middlewareInstanceAuthenticator = require('./middleware/instanceAuthenticator');
 
 var _middlewareInstanceAuthenticator2 = _interopRequireDefault(_middlewareInstanceAuthenticator);
@@ -76,9 +80,9 @@ var app = (0, _express2['default'])();
 app.use(_expressDomainMiddleware2['default']);
 
 // DO NOT MOVE THIS. It is here to handle unhandled rejected Promises cleanly
-_bluebird2['default'].onPossiblyUnhandledRejection(function (err) {
-  throw err;
-});
+//Promise.onPossiblyUnhandledRejection(err => {
+//  throw err;
+//});
 
 _configValidation2['default'].validateConfig();
 _configValidation2['default'].validateEventStore(function (error) {
@@ -115,7 +119,7 @@ app.get('/instances', function (req, res) {
 });
 
 // Ensure that all routes with :instanceId parameters are properly authenticated
-app.param('instanceId', _middlewareInstanceAuthenticator2['default']);
+app.param('instanceId', (0, _middlewareCatchAsyncErrors2['default'])(_middlewareInstanceAuthenticator2['default']));
 app.param('digestId', _middlewareInstanceToDigestValidator2['default']);
 app.param('inboxId', _middlewareInstanceToInboxValidator2['default']);
 

@@ -3,6 +3,7 @@ import eventStore from '../helpers/eventStoreClient';
 import translatorFactory from '../translators/translatorFactory';
 import commitsAddedFormatAsHal from './commitsAddedFormatAsHal';
 import MalformedPushEventError from '../../middleware/malformedPushEventError';
+import Promise from 'bluebird';
 
 export default (req, res) => {
     const instanceId = req.instance.instanceId;
@@ -14,13 +15,20 @@ export default (req, res) => {
     const translator = translatorFactory.create(req);
 
     if (translator) {
-        const events = translator.translatePush(req.body, instanceId, digestId, inboxId);
+        let events;
+        try {
+            events = translator.translatePush(req.body, instanceId, digestId, inboxId);
+        } catch (err) {
+            console.log("****** CAUGHT A THROWN ERROR! ******");
+            console.log(err);
+            return Promise.reject(err);
+        }
         const postArgs = {
             name: `inboxCommits-${inboxId}`,
             events
         };
 
-        eventStore.postToStream(postArgs)
+        return eventStore.postToStream(postArgs)
             .then(() => {
                 const inboxData = {
                     inboxId,

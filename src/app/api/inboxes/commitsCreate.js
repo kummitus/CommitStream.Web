@@ -26,6 +26,10 @@ var _middlewareMalformedPushEventError = require('../../middleware/malformedPush
 
 var _middlewareMalformedPushEventError2 = _interopRequireDefault(_middlewareMalformedPushEventError);
 
+var _bluebird = require('bluebird');
+
+var _bluebird2 = _interopRequireDefault(_bluebird);
+
 exports['default'] = function (req, res) {
     var instanceId = req.instance.instanceId;
     var digestId = req.inbox.digestId;
@@ -36,13 +40,20 @@ exports['default'] = function (req, res) {
     var translator = _translatorsTranslatorFactory2['default'].create(req);
 
     if (translator) {
-        var events = translator.translatePush(req.body, instanceId, digestId, inboxId);
+        var events = undefined;
+        try {
+            events = translator.translatePush(req.body, instanceId, digestId, inboxId);
+        } catch (err) {
+            console.log("****** CAUGHT A THROWN ERROR! ******");
+            console.log(err);
+            return _bluebird2['default'].reject(err);
+        }
         var postArgs = {
             name: 'inboxCommits-' + inboxId,
             events: events
         };
 
-        _helpersEventStoreClient2['default'].postToStream(postArgs).then(function () {
+        return _helpersEventStoreClient2['default'].postToStream(postArgs).then(function () {
             var inboxData = {
                 inboxId: inboxId,
                 digestId: digestId

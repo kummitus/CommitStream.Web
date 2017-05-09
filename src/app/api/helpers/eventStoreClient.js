@@ -39,6 +39,8 @@ exports['default'] = _Object$assign(client, {
       partition: partition
     };
 
+    console.log("The args are: ", stateArgs);
+
     return client.projection.getStateAsync(stateArgs).then(_statusCodeValidator2['default'].validateGetProjection(args.name, args.id));
   },
   postToStream: function postToStream(args) {

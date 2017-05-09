@@ -10,7 +10,7 @@ class InvalidInstanceApiKey extends CSError {
 }
 
 export default function(req, res, next, instanceId) {
-  eventStore.queryStatePartitionById({
+  return eventStore.queryStatePartitionById({
     name: 'instance',
     id: instanceId
   }).then(function(instance) {      
@@ -20,6 +20,7 @@ export default function(req, res, next, instanceId) {
       req.instance = instance;
       next();
     } else {
+      console.log("We are throwing!");
       throw new InvalidInstanceApiKey(instanceId);
     }
   });

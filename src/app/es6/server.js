@@ -5,6 +5,7 @@ import config from './config';
 import exphbs from 'express-handlebars';
 import validation from './configValidation';
 import csErrorHandler from './middleware/csErrorHandler';
+import catchAsyncErrors from './middleware/catchAsyncErrors';
 import instanceAuthenticator from './middleware/instanceAuthenticator';
 import instanceToDigestValidator from './middleware/instanceToDigestValidator';
 import instanceToInboxValidator from './middleware/instanceToInboxValidator';
@@ -21,9 +22,9 @@ import instancesController from './api/instances/instancesController';
 app.use(domainMiddleware);
 
 // DO NOT MOVE THIS. It is here to handle unhandled rejected Promises cleanly
-Promise.onPossiblyUnhandledRejection(err => {
-  throw err;
-});
+//Promise.onPossiblyUnhandledRejection(err => {
+//  throw err;
+//});
 
 validation.validateConfig();
 validation.validateEventStore(error => {
@@ -60,7 +61,7 @@ app.get('/instances', (req, res) => {
 });
 
 // Ensure that all routes with :instanceId parameters are properly authenticated
-app.param('instanceId', instanceAuthenticator);
+app.param('instanceId', catchAsyncErrors(instanceAuthenticator));
 app.param('digestId', instanceToDigestValidator);
 app.param('inboxId', instanceToInboxValidator);
 

@@ -16,6 +16,10 @@ var _middlewareCsError = require('../../middleware/csError');
 
 var _middlewareCsError2 = _interopRequireDefault(_middlewareCsError);
 
+var _bluebird = require('bluebird');
+
+var _bluebird2 = _interopRequireDefault(_bluebird);
+
 var ProjectionNotFound = (function (_CSError) {
   _inherits(ProjectionNotFound, _CSError);
 
@@ -90,7 +94,9 @@ exports['default'] = {
   validateGetProjection: function validateGetProjection(objectType, objectId) {
     return function (response) {
       if (!response.body || response.body.length < 1 || response.statusCode === 404) {
-        throw new ProjectionNotFound('Could not find ' + objectType + ' with id ' + objectId + '.');
+        var rejection = new ProjectionNotFound('Could not find ' + objectType + ' with id ' + objectId + '.');
+        return _bluebird2['default'].reject(rejection);
+        //throw new ProjectionNotFound(`Could not find ${objectType} with id ${objectId}.`);
       }
       if (response.statusCode !== 200) {
         throw new Error(response.statusCode);
