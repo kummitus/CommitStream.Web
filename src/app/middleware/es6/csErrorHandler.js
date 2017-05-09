@@ -33,10 +33,10 @@ export default function errorHandler(err, req, res, next) {
       errorMessage.internalMessage = err.internalMessage;
     }
     errorMessage.status = err.statusCode;
-    logger.error(JSON.stringify(errorMessage));
+    logger.error('CSError processing: ' + JSON.stringify(errorMessage));
   } else {
     sendError(CSError.create(500));
     errorMessage.status = 500;
-    logger.error(JSON.stringify(errorMessage));
+    logger.error('Non-CSError processing: ' + JSON.stringify(errorMessage));
   }
 }

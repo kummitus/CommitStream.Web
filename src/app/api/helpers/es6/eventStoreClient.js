@@ -18,8 +18,6 @@ export default Object.assign(client, {
       partition
     };
 
-    console.log("The args are: ", stateArgs);
-
     return client.projection.getStateAsync(stateArgs)
       .then(statusCodeValidator.validateGetProjection(args.name, args.id));
   },

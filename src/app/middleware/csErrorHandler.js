@@ -53,11 +53,11 @@ function errorHandler(err, req, res, next) {
       errorMessage.internalMessage = err.internalMessage;
     }
     errorMessage.status = err.statusCode;
-    _logger2['default'].error(JSON.stringify(errorMessage));
+    _logger2['default'].error('CSError processing: ' + JSON.stringify(errorMessage));
   } else {
     sendError(_csError2['default'].create(500));
     errorMessage.status = 500;
-    _logger2['default'].error(JSON.stringify(errorMessage));
+    _logger2['default'].error('Non-CSError processing: ' + JSON.stringify(errorMessage));
   }
 }
 

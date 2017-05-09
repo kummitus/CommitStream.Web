@@ -1,7 +1,9 @@
+let count = 0;
+
 const catchAsyncErrors = fn => (req, res, next, ...rest) => {
     const routePromise = fn(req, res, next, ...rest);
     if (routePromise.catch) {
-        console.log("****************** WE ARE CALLING NEXT ******************");
+        console.error(`catchAsyncErrors:calling routePromise.catch #${++count}`);
         routePromise.catch(err => next(err));
     }
 };

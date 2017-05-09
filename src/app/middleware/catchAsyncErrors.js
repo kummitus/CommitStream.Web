@@ -3,6 +3,8 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+var count = 0;
+
 var catchAsyncErrors = function catchAsyncErrors(fn) {
     return function (req, res, next) {
         for (var _len = arguments.length, rest = Array(_len > 3 ? _len - 3 : 0), _key = 3; _key < _len; _key++) {
@@ -11,7 +13,7 @@ var catchAsyncErrors = function catchAsyncErrors(fn) {
 
         var routePromise = fn.apply(undefined, [req, res, next].concat(rest));
         if (routePromise["catch"]) {
-            console.log("****************** WE ARE CALLING NEXT ******************");
+            console.error("catchAsyncErrors:calling routePromise.catch #" + ++count);
             routePromise["catch"](function (err) {
                 return next(err);
             });
