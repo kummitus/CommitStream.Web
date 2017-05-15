@@ -70,12 +70,16 @@ var _apiInstancesInstancesController = require('./api/instances/instancesControl
 
 var _apiInstancesInstancesController2 = _interopRequireDefault(_apiInstancesInstancesController);
 
-// DO NOT MOVE THIS. It is here to wrap routes in a domain to catch unhandled errors
+var _middlewareCatchAsyncErrors = require('./middleware/catchAsyncErrors');
 
-var app = (0, _express2['default'])();
-app.use(_expressDomainMiddleware2['default']);
+var _middlewareCatchAsyncErrors2 = _interopRequireDefault(_middlewareCatchAsyncErrors);
+
+// DO NOT MOVE THIS. It is here to wrap routes in a domain to catch unhandled errors
+//app.use(domainMiddleware);
 
 // DO NOT MOVE THIS. It is here to handle unhandled rejected Promises cleanly
+
+var app = (0, _express2['default'])();
 _bluebird2['default'].onPossiblyUnhandledRejection(function (err) {
   throw err;
 });
@@ -115,7 +119,7 @@ app.get('/instances', function (req, res) {
 });
 
 // Ensure that all routes with :instanceId parameters are properly authenticated
-app.param('instanceId', _middlewareInstanceAuthenticator2['default']);
+app.param('instanceId', (0, _middlewareCatchAsyncErrors2['default'])(_middlewareInstanceAuthenticator2['default']));
 app.param('digestId', _middlewareInstanceToDigestValidator2['default']);
 app.param('inboxId', _middlewareInstanceToInboxValidator2['default']);
 

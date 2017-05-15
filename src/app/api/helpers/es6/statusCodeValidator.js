@@ -1,4 +1,5 @@
 import CSError from '../../middleware/csError';
+import Promise from 'bluebird';
 
 class ProjectionNotFound extends CSError {
   constructor(message = 'Projection not found') {
@@ -32,7 +33,8 @@ CSError.QueryError = QueryError;
 export default {
   validateGetProjection: (objectType, objectId) => response => {
     if (!response.body || response.body.length < 1 || response.statusCode === 404) {
-      throw new ProjectionNotFound(`Could not find ${objectType} with id ${objectId}.`);
+      return Promise.reject(new ProjectionNotFound(`Could not find ${objectType} with id ${objectId}.`));
+      //throw new ProjectionNotFound(`Could not find ${objectType} with id ${objectId}.`);
     }
     if (response.statusCode !== 200) {
       throw new Error(response.statusCode);
