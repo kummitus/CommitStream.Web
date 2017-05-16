@@ -36,10 +36,10 @@ function errorHandler(err, req, res, next) {
     }),
     body: body,
     stackTrace: err.stack,
-    exception: _util2['default'].inspect(err, {
-      showHidden: true,
-      depth: null
-    }).substr(0, 5000),
+    // exception: util.inspect(err, {
+    //   showHidden: true,
+    //   depth: null
+    // }).substr(0, 5000),
     internalMessage: ''
   };
 
