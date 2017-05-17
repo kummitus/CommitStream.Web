@@ -3,7 +3,14 @@ import util from 'util';
 import CSError from './csError';
 import logger from './logger';
 
+let count = 0;
+
 export default function errorHandler(err, req, res, next) {
+
+  count++;
+
+  console.log("csErrorHandler called " + count + " times.");
+
   let body = '';
   if (req.body) body = req.body;
   var errorMessage = {
