@@ -20,8 +20,9 @@ export default (req, res) => {
             events
         };
 
-        eventStore.postToStream(postArgs)
+        return eventStore.postToStream(postArgs)
             .then(() => {
+ //           throw new MalformedPushEventError(req);
                 const inboxData = {
                     inboxId,
                     digestId

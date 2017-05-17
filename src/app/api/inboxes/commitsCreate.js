@@ -42,7 +42,8 @@ exports['default'] = function (req, res) {
             events: events
         };
 
-        _helpersEventStoreClient2['default'].postToStream(postArgs).then(function () {
+        return _helpersEventStoreClient2['default'].postToStream(postArgs).then(function () {
+            //           throw new MalformedPushEventError(req);
             var inboxData = {
                 inboxId: inboxId,
                 digestId: digestId
